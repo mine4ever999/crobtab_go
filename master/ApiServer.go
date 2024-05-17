@@ -123,7 +123,35 @@ ERR:
 // 强制杀死某个任务
 // POST /job/kill  name=job1
 func handleJobKill(resp http.ResponseWriter, req *http.Request) {
+	var (
+		name  string
+		err   error
+		bytes []byte
+	)
 
+	// 解析POST表单
+	if err = req.ParseForm(); err != nil {
+		goto ERR
+	}
+
+	// 获取任务名
+	name = req.PostForm.Get("name")
+
+	// 杀死任务
+	if err = G_jobMgr.KillJob(name); err != nil {
+		goto ERR
+	}
+
+	// 正常应答
+	if bytes, err = common.BuildResponse(0, "success", nil); err == nil {
+		resp.Write(bytes)
+	}
+	return
+ERR:
+	// 异常应答
+	if bytes, err = common.BuildResponse(-1, err.Error(), nil); err == nil {
+		resp.Write(bytes)
+	}
 }
 
 // 查询任务日志

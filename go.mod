@@ -2,13 +2,9 @@ module go-crontab
 
 go 1.22.1
 
-require go.mongodb.org/mongo-driver v1.15.0
-
 require (
-	github.com/coreos/etcd v3.3.27+incompatible // indirect
-	github.com/coreos/go-systemd v0.0.0-20191104093116-d3cd4ed1dbcf // indirect
-	github.com/coreos/pkg v0.0.0-20240122114842-bbd7aa9bf6fb // indirect
-	github.com/google/uuid v1.3.1 // indirect
+	github.com/gorhill/cronexpr v0.0.0-20180427100037-88b0669f7d75
+	go.mongodb.org/mongo-driver v1.15.0
 )
 
 require (
@@ -23,10 +19,9 @@ require (
 	github.com/xdg-go/scram v1.1.2 // indirect
 	github.com/xdg-go/stringprep v1.0.4 // indirect
 	github.com/youmark/pkcs8 v0.0.0-20181117223130-1be2e3e5546d // indirect
-	go.etcd.io/etcd v3.3.27+incompatible
-	go.etcd.io/etcd/api/v3 v3.5.13 // indirect
+	go.etcd.io/etcd/api/v3 v3.5.13
 	go.etcd.io/etcd/client/pkg/v3 v3.5.13 // indirect
-	go.etcd.io/etcd/client/v3 v3.5.13 // indirect
+	go.etcd.io/etcd/client/v3 v3.5.13
 	go.uber.org/atomic v1.7.0 // indirect
 	go.uber.org/multierr v1.6.0 // indirect
 	go.uber.org/zap v1.17.0 // indirect
