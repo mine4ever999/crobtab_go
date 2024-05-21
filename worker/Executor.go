@@ -18,7 +18,6 @@ var (
 
 // 执行一个任务
 func (executor *Executor) ExecuteJob(info *common.JobExecuteInfo) {
-	// 执行shell命令
 	go func() {
 		var (
 			cmd     *exec.Cmd
@@ -27,6 +26,7 @@ func (executor *Executor) ExecuteJob(info *common.JobExecuteInfo) {
 			result  *common.JobExecuteResult
 			jobLock *JobLock
 		)
+
 		// 任务结果
 		result = &common.JobExecuteResult{
 			ExecuteInfo: info,
@@ -41,6 +41,7 @@ func (executor *Executor) ExecuteJob(info *common.JobExecuteInfo) {
 
 		// 上锁
 		// 随机睡眠(0~1s)
+		// 不同机器的时钟 会有误差  NTP服务校时
 		time.Sleep(time.Duration(rand.Intn(1000)) * time.Millisecond)
 
 		err = jobLock.TryLock()
@@ -49,9 +50,10 @@ func (executor *Executor) ExecuteJob(info *common.JobExecuteInfo) {
 		if err != nil { // 上锁失败
 			result.Err = err
 			result.EndTime = time.Now()
-		} else { // 上锁成功
+		} else {
 			// 上锁成功后，重置任务启动时间
 			result.StartTime = time.Now()
+
 			// 执行shell命令
 			cmd = exec.CommandContext(info.CancelCtx, "/bin/bash", "-c", info.Job.Command)
 

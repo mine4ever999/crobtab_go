@@ -102,6 +102,11 @@ func ExtractJobName(jobKey string) string {
 	return strings.TrimPrefix(jobKey, JOB_SAVE_DIR)
 }
 
+// 从 /cron/killer/job10提取job10
+func ExtractKillerName(killerKey string) string {
+	return strings.TrimPrefix(killerKey, JOB_KILLER_DIR)
+}
+
 // 任务变化事件有2种：1）更新任务 2）删除任务
 func BuildJobEvent(eventType int, job *Job) (jobEvent *JobEvent) {
 	return &JobEvent{

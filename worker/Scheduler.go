@@ -18,6 +18,7 @@ var (
 	G_scheduler *Scheduler
 )
 
+// 处理任务事件
 func (scheduler *Scheduler) handleJobEvent(jobEvent *common.JobEvent) {
 	var (
 		jobSchedulePlan *common.JobSchedulePlan
@@ -34,16 +35,16 @@ func (scheduler *Scheduler) handleJobEvent(jobEvent *common.JobEvent) {
 		scheduler.jobPlanTable[jobEvent.Job.Name] = jobSchedulePlan
 	case common.JOB_EVENT_DELETE: // 删除任务事件
 		if _, jobExisted = scheduler.jobPlanTable[jobEvent.Job.Name]; jobExisted {
-			// 从map中删除任务
 			delete(scheduler.jobPlanTable, jobEvent.Job.Name)
 		}
 	case common.JOB_EVENT_KILL: // 强杀任务事件
 		// 取消掉Command执行, 判断任务是否在执行中
 		if jobExecuteInfo, jobExecuting = scheduler.jobExecutingTable[jobEvent.Job.Name]; jobExecuting {
+			// fmt.Println("Kill job:", jobEvent.Job.Name)
+			// fmt.Println(&jobExecuteInfo.CancelFunc)
 			jobExecuteInfo.CancelFunc() // 触发command杀死shell子进程, 任务得到退出
 		}
 	}
-
 }
 
 // 处理任务结果
