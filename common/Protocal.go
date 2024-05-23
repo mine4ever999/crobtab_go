@@ -59,6 +59,21 @@ type JobLog struct {
 	EndTime      int64  `json:"endTime" bson:"endTime"`           // 任务执行结束时间
 }
 
+// 日志批次
+type LogBatch struct {
+	Logs []interface{} // 多条日志
+}
+
+// 任务日志过滤条件
+type JobLogFilter struct {
+	JobName string `bson:"jobName"`
+}
+
+// 任务日志排序规则
+type SortLogByStartTime struct {
+	SortOrder int `bson:"startTime"` // {startTime: -1}
+}
+
 // Http接口应答
 type Response struct {
 	Errno int         `json:"errno"`
@@ -105,6 +120,11 @@ func ExtractJobName(jobKey string) string {
 // 从 /cron/killer/job10提取job10
 func ExtractKillerName(killerKey string) string {
 	return strings.TrimPrefix(killerKey, JOB_KILLER_DIR)
+}
+
+// 提取worker的IP
+func ExtractWorkerIP(regKey string) string {
+	return strings.TrimPrefix(regKey, JOB_WORKER_DIR)
 }
 
 // 任务变化事件有2种：1）更新任务 2）删除任务

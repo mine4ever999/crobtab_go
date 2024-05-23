@@ -35,24 +35,28 @@ func main() {
 	// 1. 初始化线程
 	initEnv()
 
-	// 2. 加载配置
+	//  加载配置
 	if err = master.InitConfig(confFile); err != nil {
 		goto ERR
 	}
-	// 3. 初始化任务管理器
+
+	// 初始化服务发现模块
+	if err = master.InitWorkerMgr(); err != nil {
+		goto ERR
+	}
+
+	//  初始化日志
+	if err = master.InitLogMgr(); err != nil {
+		goto ERR
+	}
+	//  初始化任务管理器
 	if err = master.InitJobMgr(); err != nil {
 		goto ERR
 	}
-	// 4. 启动API HTTP服务
+	//  启动API HTTP服务
 	if err = master.InitApiServer(); err != nil {
 		goto ERR
 	}
-	// 5. 启动任务调度
-	// 6. 启动监听
-	// 7. 启动工作节点
-	// 8. 启动日志收集
-	// 9. 启动监控
-	// 10. 启动管理平台
 	// 正常退出
 	for {
 		time.Sleep(1 * time.Second)

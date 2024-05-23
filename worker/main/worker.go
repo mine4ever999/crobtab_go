@@ -42,6 +42,16 @@ func main() {
 		goto ERR
 	}
 
+	// 服务注册
+	if err = worker.InitRegister(); err != nil {
+		goto ERR
+	}
+
+	// 启动日志协程
+	if err = worker.InitLogSink(); err != nil {
+		goto ERR
+	}
+
 	// 初始化任务调度器
 	if err = worker.InitScheduler(); err != nil {
 		goto ERR
