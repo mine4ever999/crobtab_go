@@ -89,11 +89,9 @@ func (register *Register) keepOnline() {
 
 		// 处理续租应答
 		for {
-			select {
-			case keepAliveResp = <-keepAliveChan:
-				if keepAliveResp == nil { // 续租失败
-					goto RETRY
-				}
+			keepAliveResp = <-keepAliveChan
+			if keepAliveResp == nil { // 续租失败
+				goto RETRY
 			}
 		}
 
